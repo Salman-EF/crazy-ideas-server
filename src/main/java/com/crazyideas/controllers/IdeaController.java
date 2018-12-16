@@ -13,19 +13,21 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class IdeaController {
 
     private static final Logger logger = LoggerFactory.getLogger(IdeaController.class);
 
     @Autowired
     IdeaRepository ideaRepository;
+
     @GetMapping("/ideas")
     public List<Idea> getIdeas(){
         logger.info("Get all ideas");
         return ideaRepository.findAll();
     }
     @GetMapping("/ideas/{ideaId}")
-    public Idea getIdea(@PathVariable ObjectId ideaId) throws ConversionFailedException {
+    public Idea getIdea(@PathVariable ObjectId ideaId) {
         logger.info("Get idea: "+ideaId);
         Idea idea = new Idea();
         try{
@@ -33,11 +35,6 @@ public class IdeaController {
         } catch(NoSuchElementException ex){
             // Idea not exists
             logger.warn("Idea: "+ideaId+", not found");
-            idea = null;
-        }
-        catch(ConversionFailedException ex){
-            // invalid hexadecimal representation of an ObjectId
-            logger.warn("invalid hexadecimal representation of an ObjectId");
             idea = null;
         }
         return idea;

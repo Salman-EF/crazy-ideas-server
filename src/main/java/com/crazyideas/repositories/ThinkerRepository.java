@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ThinkerRepository extends MongoRepository<Thinker, ObjectId> {
 
-    Thinker findByName(String name);
+    Thinker findByEmail(String email);
 }

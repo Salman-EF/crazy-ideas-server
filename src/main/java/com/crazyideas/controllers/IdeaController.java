@@ -2,7 +2,6 @@ package com.crazyideas.controllers;
 
 import com.crazyideas.models.Idea;
 import com.crazyideas.repositories.IdeaRepository;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class IdeaController {
         return ideaRepository.findAll();
     }
     @GetMapping("/ideas/{ideaId}")
-    public Idea getIdea(@PathVariable ObjectId ideaId) {
+    public Idea getIdea(@PathVariable String ideaId) {
         logger.info("Get idea: "+ideaId);
         Idea idea = new Idea();
         try{
@@ -41,12 +40,12 @@ public class IdeaController {
     }
     @PostMapping("/ideas")
     public Idea saveIdea(@RequestBody Idea idea){
-        logger.info("Save "+idea.toString());
-        ideaRepository.save(idea);
-        return idea;
+        Idea ideaSaved = ideaRepository.save(idea);
+        logger.info("Save "+ideaSaved.toString());
+        return ideaSaved;
     }
     @PutMapping("/ideas/{ideaId}")
-    public Idea updateIdea(@PathVariable ObjectId ideaId, @RequestBody Idea idea){
+    public Idea updateIdea(@PathVariable String ideaId, @RequestBody Idea idea){
         logger.info("Update "+ideaId);
         try{
             Idea ideaToUpdate = ideaRepository.findById(ideaId).get();
@@ -60,7 +59,7 @@ public class IdeaController {
         return idea;
     }
     @DeleteMapping("/ideas/{ideaId}")
-    public boolean deleteIdea(@PathVariable ObjectId ideaId){
+    public boolean deleteIdea(@PathVariable String ideaId){
         logger.info("Delete "+ideaId);
         boolean deletingStatus = false;
         try{

@@ -19,7 +19,11 @@ public class Thinker {
     private Set<Role> roles;
 
     public Thinker() {}
-    public Thinker(String userName) { this.userName = userName; }
+    public Thinker(String userName,String email,String password) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+    }
 
     public String getId() {
         return id;

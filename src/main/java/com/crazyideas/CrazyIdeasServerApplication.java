@@ -1,19 +1,11 @@
 package com.crazyideas;
 
 import com.crazyideas.models.Role;
-import com.crazyideas.models.Thinker;
 import com.crazyideas.repositories.RoleRepository;
-import com.crazyideas.repositories.ThinkerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 
 @SpringBootApplication
 public class CrazyIdeasServerApplication {
@@ -22,10 +14,8 @@ public class CrazyIdeasServerApplication {
 		SpringApplication.run(CrazyIdeasServerApplication.class, args);
 	}
 
-	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Bean
-	CommandLineRunner init(RoleRepository roleRepository, ThinkerRepository thinkerRepository) {
+	CommandLineRunner init(RoleRepository roleRepository) {
 
 		return args -> {
 

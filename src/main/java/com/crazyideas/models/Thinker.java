@@ -1,7 +1,6 @@
 package com.crazyideas.models;
 
 import org.springframework.data.annotation.Id;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,34 +10,43 @@ import java.util.Set;
 public class Thinker {
 
     @Id
-    private ObjectId id;
-    private String name;
-
+    private String id;
+    private String userName;
+    private String email;
+    private String password;
+    private boolean enabled;
     @DBRef
     private Set<Role> roles;
 
     public Thinker() {}
-    public Thinker(String name) {
-        this.name = name;
-    }
+    public Thinker(String userName) { this.userName = userName; }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    public boolean isEnabled() { return enabled; }
+    public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
     public Set<Role> getRoles() {
         return roles;
     }
-
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
@@ -46,8 +54,11 @@ public class Thinker {
     @Override
     public String toString() {
         return "Thinker{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", enabled=" + enabled +
                 ", roles=" + roles +
                 '}';
     }

@@ -1,37 +1,34 @@
-package com.crazyideas.configuration;
+package com.crazyideas.security;
 
+import com.crazyideas.configuration.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.sql.DataSource;
+import static com.crazyideas.security.SecurityConstants.*;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
+	private final CustomUserDetailsService customUserDetailsService;
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	private static final String ADMIN = "ADMIN";
-    private static final String USER = "USER";
+	public SecurityConfiguration(CustomUserDetailsService customUserDetailsService) {
+		this.customUserDetailsService = customUserDetailsService;
+	}
 
-	@Bean
-    UserDetailsService thinkerDetailsService(){
-	    return new CustomUserDetailsService();
-    }
-	
+
 	@Override
  	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth
-            .userDetailsService(thinkerDetailsService())
+            .userDetailsService(this.customUserDetailsService)
 			.passwordEncoder(bCryptPasswordEncoder);
 	}
 	
@@ -43,14 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.antMatchers("/ideas/**").hasAnyAuthority(USER,ADMIN)
 			.anyRequest().authenticated()
 			.and().csrf().disable()
-			.formLogin()/*.loginPage("/login")*/.failureUrl("/login?error=true")
-			/*.defaultSuccessUrl("/dashboard")*/
-			.usernameParameter("email")
-			.passwordParameter("password")
-			.and().logout()
-			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-			.logoutSuccessUrl("/login")
-			.and().rememberMe()
-			.and().exceptionHandling().accessDeniedPage("/access_denied");
+			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+			.addFilter(new JWTAuthorizationFilter(authenticationManager(), customUserDetailsService))
+			.rememberMe();
 	}
 }

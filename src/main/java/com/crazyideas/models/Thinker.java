@@ -24,6 +24,10 @@ public class Thinker {
         this.email = email;
         this.password = password;
     }
+    public Thinker(String id,String userName) {
+        this.id = id;
+        this.userName = userName;
+    }
 
     public String getId() {
         return id;

@@ -5,13 +5,15 @@ import com.crazyideas.repositories.ThinkerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 public class ThinkerController {
 
     private static final Logger logger = LoggerFactory.getLogger(ThinkerController.class);
@@ -23,6 +25,13 @@ public class ThinkerController {
     public List<Thinker> getAllThinkers(){
         logger.info("Get all Thinkers");
         return thinkerRepository.findAll();
+    }
+    @GetMapping("/thinkers/me")
+    public ResponseEntity<Thinker> getCurrentUser() {
+        String authUsername = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        Thinker appThinker = thinkerRepository.findByEmail(authUsername);
+        logger.info("Current user: "+appThinker);
+        return ResponseEntity.ok(appThinker);
     }
     @GetMapping("/thinkers/{thinker}")
     public Thinker getThinker(@PathVariable String thinker) {

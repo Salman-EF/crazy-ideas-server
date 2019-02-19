@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -41,6 +42,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             return this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(thinker.getEmail(),thinker.getPassword()));
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (InternalAuthenticationServiceException e) {
+            return null;
         }
     }
 

@@ -5,9 +5,6 @@ import com.crazyideas.repositories.ThinkerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,13 +23,13 @@ public class ThinkerController {
         logger.info("Get all Thinkers");
         return thinkerRepository.findAll();
     }
-    @GetMapping("/thinkers/me")
+    /*@GetMapping("/thinkers/me")
     public ResponseEntity<Thinker> getCurrentUser() {
         String authUsername = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         Thinker appThinker = thinkerRepository.findByEmail(authUsername);
         logger.info("Current user: "+appThinker);
         return ResponseEntity.ok(appThinker);
-    }
+    }*/
     @GetMapping("/thinkers/{thinker}")
     public Thinker getThinker(@PathVariable String thinker) {
         logger.info("Get thinker: "+thinker);

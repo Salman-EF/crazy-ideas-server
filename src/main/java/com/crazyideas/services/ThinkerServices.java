@@ -8,7 +8,6 @@ import com.crazyideas.repositories.ThinkerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -17,7 +16,7 @@ import java.util.NoSuchElementException;
 
 @Service
 public class ThinkerServices {
-
+/*
     private static final Logger logger = LoggerFactory.getLogger(IdeaController.class);
     @Autowired
     ThinkerRepository thinkerRepository;
@@ -68,4 +67,5 @@ public class ThinkerServices {
         }
         return deletingStatus;
     }
+    */
 }
